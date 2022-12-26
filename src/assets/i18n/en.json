@@ -1,0 +1,33 @@
+{
+  "permission": "Permission",
+  "registration": "Registration",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "age": "Age",
+  "gender": "Gender",
+  "male": "Male",
+  "female": "Female",
+  "birthday": "Birthday",
+  "imBusy": "I am currently working",
+  "work_experience": "Work Experience",
+  "job_title": "Job Title",
+  "description": "Description",
+  "email": "Email",
+  "forms": {
+    "feedback": {
+      "required": "{{field}} is required",
+      "minlength": "The number of characters must be more than {{requiredLength}}",
+      "min": "The number must be more than {{min}}",
+      "maxlength": "The number of characters must be less than {{requiredLength}}",
+      "max": "The number must be less than {{max}}",
+      "email": "The entered email is not correct",
+      "pattern": "The entered format is not correct"
+    },
+    "actions": {
+      "save": "Save",
+      "create": "Create",
+      "update": "Update",
+      "delete": "Delete"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+<div class="navbar row">
+  <div class="col-md-4">
+    <div class="navbar-permission">
+    <span class="p-float-label">
+      <p-dropdown [options]="permissions" [ngModel]="selectedPermission|async" (onChange)="changeUser($event)" optionLabel="name" optionValue="value"></p-dropdown>
+      <label>{{ 'permission' | translate }}</label>
+    </span>
+    </div>
+  </div>
+</div>

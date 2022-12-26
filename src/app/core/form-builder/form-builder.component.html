@@ -1,0 +1,146 @@
+<ng-template [ngIf]="!(option|async).permissions.length || (option|async).permissions.includes(activeUser$|async)">
+  <p-panel [header]="(option|async).formName|translate">
+    <div class="row pb-2" [formGroup]="formGroup">
+      <ng-container *ngFor="let ctrl of (option|async).controls">
+        <ng-container *ngIf="!ctrl.permissions.length || ctrl.permissions.includes(activeUser$|async)" [ngSwitch]="ctrl.type">
+          <ng-template [ngSwitchCase]="inputType.String">
+            <div class="d-flex flex-column col-md-{{ctrl?.size ? ctrl?.size : '4'}}">
+              <span class="p-float-label my-2">
+                <input [formControlName]="ctrl.key" pInputText
+                       [ngClass]="{'ng-invalid ng-dirty': formGroup.controls[ctrl.key].errors && submitted}">
+                <label>{{ ctrl.title | translate }}</label>
+              </span>
+              <ng-container *ngFor="let error of getErrors(formGroup.controls[ctrl.key].errors)">
+                <small *ngIf="formGroup.controls[ctrl.key].hasError(error) && submitted" class="p-error mb-2">
+                  {{ 'forms.feedback.'+error | translate: {
+                    field: ctrl.key|translate,
+                    requiredLength: formGroup.controls[ctrl.key].errors[error]?.requiredLength
+                  } }}
+                </small>
+              </ng-container>
+            </div>
+          </ng-template>
+          <ng-template [ngSwitchCase]="inputType.Number">
+            <div class="d-flex flex-column col-md-{{ctrl?.size ? ctrl?.size : '4'}}">
+              <span class="p-float-label my-2">
+                <input [formControlName]="ctrl.key" pInputText type="number"
+                       [ngClass]="{'ng-invalid ng-dirty': formGroup.controls[ctrl.key].errors && submitted}">
+                <label>{{ ctrl.title | translate }}</label>
+              </span>
+              <ng-container *ngFor="let error of getErrors(formGroup.controls[ctrl.key].errors)">
+                <small *ngIf="formGroup.controls[ctrl.key].hasError(error) && submitted" class="p-error mb-2">
+                  {{ 'forms.feedback.'+error | translate: {
+                    field: ctrl.key|translate,
+                    min: formGroup.controls[ctrl.key].errors[error]?.min,
+                    max: formGroup.controls[ctrl.key].errors[error]?.max
+                  } }}
+                </small>
+              </ng-container>
+            </div>
+          </ng-template>
+          <ng-template [ngSwitchCase]="inputType.Radio">
+            <div class="d-flex flex-column col-md-{{ctrl?.size ? ctrl?.size : '4'}}">
+              <div class="my-2 p-2">
+                <label>{{ ctrl.title | translate }}:</label>
+                <ng-container *ngFor="let item of ctrl.options?.items">
+                  <p-radioButton [name]="ctrl.key" [value]="item?.value" [label]="item?.title|translate" [formControlName]="ctrl.key"
+                                 [ngClass]="{'ng-invalid ng-dirty': formGroup.controls[ctrl.key].errors && submitted}">
+                  </p-radioButton>
+                </ng-container>
+              </div>
+              <ng-container *ngFor="let error of getErrors(formGroup.controls[ctrl.key].errors)">
+                <small *ngIf="formGroup.controls[ctrl.key].hasError(error) && submitted" class="p-error mb-2">
+                  {{ 'forms.feedback.'+error | translate: { field: ctrl.key|translate } }}
+                </small>
+              </ng-container>
+            </div>
+          </ng-template>
+          <ng-template [ngSwitchCase]="inputType.Date">
+            <div class="d-flex flex-column col-md-{{ctrl?.size ? ctrl?.size : '4'}}">
+              <span class="p-float-label my-2">
+                <p-calendar [showButtonBar]="true" [formControlName]="ctrl.key"
+                            [ngClass]="{'ng-invalid ng-dirty': formGroup.controls[ctrl.key].errors && submitted}">
+                </p-calendar>
+                <label>{{ ctrl.title | translate }}</label>
+              </span>
+              <ng-container *ngFor="let error of getErrors(formGroup.controls[ctrl.key].errors)">
+                <small *ngIf="formGroup.controls[ctrl.key].hasError(error) && submitted" class="p-error mb-2">
+                  {{ 'forms.feedback.'+error | translate: { field: ctrl.key|translate } }}
+                </small>
+              </ng-container>
+            </div>
+          </ng-template>
+          <ng-template [ngSwitchCase]="inputType.RangeDate">
+            <div class="d-flex flex-column col-md-{{ctrl?.size ? ctrl?.size : '4'}}">
+              <span class="p-float-label my-2">
+                <p-calendar [showButtonBar]="true" [formControlName]="ctrl.key" selectionMode="range"
+                            [ngClass]="{'ng-invalid ng-dirty': formGroup.controls[ctrl.key].errors && submitted}">
+                </p-calendar>
+                <label>{{ ctrl.title | translate }}</label>
+              </span>
+              <ng-container *ngFor="let error of getErrors(formGroup.controls[ctrl.key].errors)">
+                <small *ngIf="formGroup.controls[ctrl.key].hasError(error) && submitted" class="p-error mb-2">
+                  {{ 'forms.feedback.'+error | translate: { field: ctrl.key|translate } }}
+                </small>
+              </ng-container>
+            </div>
+          </ng-template>
+          <ng-template [ngSwitchCase]="inputType.CheckBox">
+            <div class="d-flex flex-column col-md-{{ctrl?.size ? ctrl?.size : '4'}}">
+              <div class="d-flex my-2 p-2">
+                <p-checkbox [binary]="true" [label]="ctrl.title|translate" [formControlName]="ctrl.key">
+                </p-checkbox>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template [ngSwitchCase]="inputType.DropDown">
+            <div class="d-flex flex-column col-md-{{ctrl?.size ? ctrl?.size : '4'}}">
+              <div class="p-float-label my-2">
+                <p-dropdown [options]="ctrl.options?.items" [formControlName]="ctrl.key"
+                            [optionLabel]="ctrl.options?.keyItemLabel||'name'" [optionValue]="ctrl.options?.keyItemValue||'value'"
+                            [ngClass]="{'ng-invalid ng-dirty': formGroup.controls[ctrl.key].errors && submitted}">
+                </p-dropdown>
+                <label>{{ ctrl.title | translate }}</label>
+              </div>
+              <ng-container *ngFor="let error of getErrors(formGroup.controls[ctrl.key].errors)">
+                <small *ngIf="formGroup.controls[ctrl.key].hasError(error) && submitted" class="p-error mb-2">
+                  {{ 'forms.feedback.'+error | translate: { field: ctrl.key|translate } }}
+                </small>
+              </ng-container>
+            </div>
+          </ng-template>
+          <ng-template [ngSwitchCase]="inputType.TextArea">
+            <div class="d-flex flex-column col-md-{{ctrl?.size ? ctrl?.size : '4'}}">
+              <span class="p-float-label my-2">
+                <textarea [rows]="ctrl.options?.rows||3" [cols]="ctrl.options?.cols||3" [formControlName]="ctrl.key"
+                          pInputTextarea [ngClass]="{'ng-invalid ng-dirty': formGroup.controls[ctrl.key].errors && submitted}">
+                </textarea>
+                <label>{{ ctrl.title | translate }}</label>
+              </span>
+              <ng-container *ngFor="let error of getErrors(formGroup.controls[ctrl.key].errors)">
+                <small *ngIf="formGroup.controls[ctrl.key].hasError(error) && submitted" class="p-error mb-2">
+                  {{ 'forms.feedback.'+error | translate: { field: ctrl.key|translate } }}
+                </small>
+              </ng-container>
+            </div>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+    </div>
+    <p-toolbar>
+      <div class="p-toolbar-group-left">
+      </div>
+      <div class="p-toolbar-group-right">
+        <ng-template [ngIf]="(option|async).actions.includes(actionType.Create)">
+          <p-button [label]="'forms.actions.create'|translate" styleClass="mx-1 p-button-success" (click)="submit(actionType.Create)"></p-button>
+        </ng-template>
+        <ng-template [ngIf]="(option|async).actions.includes(actionType.Update)">
+          <p-button [label]="'forms.actions.update'|translate" styleClass="mx-1 p-button-warning" (click)="submit(actionType.Update)"></p-button>
+        </ng-template>
+        <ng-template [ngIf]="(option|async).actions.includes(actionType.Delete)">
+          <p-button [label]="'forms.actions.delete'|translate" styleClass="mx-1 p-button-danger" (click)="submit(actionType.Delete)"></p-button>
+        </ng-template>
+      </div>
+    </p-toolbar>
+  </p-panel>
+</ng-template>

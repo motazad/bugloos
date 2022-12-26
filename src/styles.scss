@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/bootstrap/scss/bootstrap-grid";
+
+// primeng custom
+.p-float-label input:focus ~ label, .p-float-label input.p-filled ~ label, .p-float-label textarea:focus ~ label, .p-float-label textarea.p-filled ~ label, .p-float-label .p-inputwrapper-focus ~ label, .p-float-label .p-inputwrapper-filled ~ label {
+  top: -0.5rem !important;
+  background-color: white;
+  padding: 0.5rem;
+}
+
+.p-float-label {
+  width: 100%;
+  label {
+    margin-inline-start: 1rem;
+  }
+}
+
+.p-dropdown, .p-inputtext, .p-calendar  {
+  width: 100%;
+}
+
+.p-radiobutton {
+  margin-inline-start: 1rem;
+}
